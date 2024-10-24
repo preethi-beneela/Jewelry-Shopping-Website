@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+        nav {
+            margin: 20px 0;
+            text-align: center;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+        nav a:hover {
+            color: #4CAF50;
+        }
+        .card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+        .card h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .income, .expenses {
+            display: inline-block;
+            width: 48%;
+            vertical-align: top;
+        }
+        .income ul, .expenses ul {
+            list-style: none;
+            padding: 0;
+        }
+        .income ul li, .expenses ul li {
+            padding: 10px;
+            background-color: #f4f4f4;
+            margin-bottom: 10px;
+            border-left: 5px solid #4CAF50;
+        }
+        .add-transaction {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .add-transaction input, .add-transaction button {
+            padding: 10px;
+            margin: 5px;
+        }
+        .balance-display {
+            text-align: center;
+            font-size: 1.5em;
+            margin-top: 20px;
+            background-color: #e7f5e8;
+            padding: 10px;
+            border-radius: 8px;
+            color: #333;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Financial Management System</h1>
+    </header>
+
+    <div class="container">
+        <nav>
+            <a href="#">Dashboard</a>
+            <a href="/reports.html">Reports</a> <!-- Corrected link -->
+        </nav>
+
+        <section class="card">
+            <h2>Financial Overview</h2>
+            <div class="income">
+                <h3>Income</h3>
+                <ul id="income-list"></ul>
+            </div>
+            <div class="expenses">
+                <h3>Expenses</h3>
+                <ul id="expenses-list"></ul>
+            </div>
+            <div class="balance-display">
+                Current Balance: $<span id="balance-amount">0</span>
+            </div>
+        </section>
+
+        <section class="card add-transaction">
+            <h2>Add New Transaction</h2>
+            <form id="transaction-form">
+                <input type="text" id="transaction-name" placeholder="Transaction Name" required>
+                <input type="number" id="transaction-amount" placeholder="Amount" required>
+                <select id="transaction-type">
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
+                <button type="submit">Add Transaction</button>
+            </form>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2024 Financial Management System</p>
+    </footer>
+
+    <script>
+        const incomeLimit = 20000;  // Example income limit
+        const balanceThreshold = 5000;  // Minimum balance threshold for alert
+
+        async function updateBalance() {
+            try {
+                const response = await fetch('/transactions');
+                const transactions = await response.json();
+
+                document.getElementById('income-list').innerHTML = '';
+                document.getElementById('expenses-list').innerHTML = '';
+
+                let balance = 0;
+                let totalIncome = 0;
+                let totalExpenses = 0;
+
+                transactions.forEach(transaction => {
+                    const li = document.createElement('li');
+                    li.textContent = `${transaction.name}: $${transaction.amount.toFixed(2)}`;
+
+                    if (transaction.type === 'income') {
+                        document.getElementById('income-list').appendChild(li);
+                        totalIncome += transaction.amount;
+                        balance += transaction.amount;
+                    } else {
+                        document.getElementById('expenses-list').appendChild(li);
+                        totalExpenses += transaction.amount;
+                        balance -= transaction.amount;
+                    }
+                });
+
+                document.getElementById('balance-amount').textContent = balance.toFixed(2);
+
+                if (totalExpenses > totalIncome) {
+                    alert(`Warning: Your expenses have exceeded your income!`);
+                }
+
+                if (balance < balanceThreshold) {
+                    alert(`Warning: Your balance is low!`);
+                }
+
+            } catch (error) {
+                console.error('Error fetching transactions:', error);
+            }
+        }
+
+        window.onload = updateBalance;
+
+        const transactionForm = document.getElementById('transaction-form');
+
+        transactionForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const name = document.getElementById('transaction-name').value;
+            const amount = document.getElementById('transaction-amount').value;
+            const type = document.getElementById('transaction-type').value;
+
+            const transaction = {
+                name,
+                amount: parseFloat(amount),
+                type
+            };
+
+            try {
+                const response = await fetch('/transactions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(transaction)
+                });
+
+                if (response.ok) {
+                    alert('Transaction added!');
+                    updateBalance();
+                    transactionForm.reset();
+                } else {
+                    alert('Failed to add transaction.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

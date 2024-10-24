@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jewelry Shop</title>
+    <style>
+        /* Basic styling for the product cards */
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            display: inline-block;
+            width: 250px;
+            height:250px;
+            
+        }
+        img {
+            width: 250px;
+            height:250px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="prod-page" id="prod-page">
+        <div class="products" id="products"></div>
+    </div>
+
+
+    <script>
+        // Fetch product data and display it
+        fetch('/products')
+            .then(response => response.json())
+            .then(products => {
+                const productsDiv = document.getElementById('products');
+                products.forEach(product => {
+                    if (product.category === "bangles") {
+                        const productDiv = document.createElement('div');
+                        const descDiv = document.createElement('div');
+                        const likeDiv = document.createElement('div');
+                        const categorydiv=document.createElement('div');
+                        descDiv.className = 'desc';
+                        likeDiv.className = 'like';
+                        productDiv.className = 'product';
+                        categorydiv.className='img-category'
+                        productDiv.innerHTML = `
+                            <img src="/images/${product.filename}" alt="${product.brand} Eyeglasses">`  
+                        ;
+
+                        descDiv.innerHTML =` 
+                            <b>${product.category}</b>
+                            <b>Rs.${product.price}</b>
+                        `;
+
+                       
+                      
+                       categorydiv.innerHTML=`
+                       <p>${product.description}</p>`
+
+
+                        // Append description and like sections to the product div
+                        productDiv.appendChild(likeDiv);
+                        productDiv.appendChild(descDiv);
+                        productDiv.appendChild(categorydiv);
+                        productsDiv.appendChild(productDiv);
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching products:', error));
+    </script>
+
+
+</body>
+</html>

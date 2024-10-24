@@ -1,0 +1,158 @@
+/* Reset some default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa; /* Light background for better contrast */
+}
+
+/* Header Styles */
+header {
+    background-color: #3a3b3c; /* Dark background for the header */
+    color: white;
+    padding: 10px 0;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+nav .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Background Container */
+.bg-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full height for centering */
+}
+
+.sign_page {
+    background-color: white; /* White background for the sign-in form */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    width: 300px;
+    text-align: center;
+}
+
+/* Sign In Title */
+.sign {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+.google_ios {
+    background-color: #4285f4; /* Google blue */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px 0;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+
+.google_ios:hover {
+    opacity: 0.8; /* Slightly fade on hover */
+}
+
+/* Separator Styles */
+.separator-container {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.separator-container hr {
+    flex: 1; /* Take full width */
+    border: 1px solid #ccc; /* Light separator line */
+}
+
+.separator-container span {
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+/* Form Styles */
+.form {
+    margin: 20px 0;
+}
+
+.inputbox {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc; /* Light border for inputs */
+    border-radius: 5px;
+}
+
+.inputbox:focus {
+    border-color: #4285f4; /* Focus effect */
+    outline: none; /* Remove default outline */
+}
+
+/* Submit Button */
+.submit_button {
+    background-color: #5cb85c; /* Green background for submit */
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.submit_button:hover {
+    opacity: 0.8; /* Fade on hover */
+}
+
+/* Paragraph Styles */
+.para {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.para_anchor {
+    color: #4285f4; /* Link color */
+    text-decoration: none;
+}
+
+.para_anchor:hover {
+    text-decoration: underline; /* Underline on hover */
+}

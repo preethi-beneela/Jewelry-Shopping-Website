@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register & Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="sign.css">
+    <link rel="stylesheet" href="dp.css"
+</head>
+<body>
+  <header>
+    <nav>
+        <div class="logo">Jewelry Shop</div>
+        <ul>
+            <li><a href="dp.html">Home</a></li>
+            <li><a href="prod.html">Rings</a></li>
+            <li><a href="bracelets.html">Bracelets</a></li>
+            <li><a href="earrings.html">Earrings</a></li>
+            <li><a href="bangles.html">Bangles</a></li>
+            <li><a href="necklace.html">Necklace</a></li>
+            <li><a href="signin.html" >Login</a></li>
+            <li><a href="aboutus.html" >About Us</a></li>
+        </ul>
+    </nav>
+</header>
+<div class = "bg-container">
+  <div class = "sign_page">
+    <!-- <h1 class = "website_name">CRYSTAL OPTICS</h1> -->
+    <h1 class = "sign">Sign Up</h1>
+    <button class = "google_ios"><i class="fa-brands fa-google icon_css"></i>Sign Up with Google</button>
+    <button class = "google_ios"><i class="fa-brands fa-apple icon_css"></i>Sign Up with IOS</button>
+    <div class="separator-container">
+        <hr>
+        <span>OR</span>
+        <hr>
+    </div>
+    <div class = "form">
+      <form action="/signup" method="POST" class="form">
+        <input type="text" name="firstName" placeholder="First Name" class="inputbox" required>
+        <input type="text" name="lastName" placeholder="Last Name" class="inputbox" required>
+        <input type="email" name="email" placeholder="Enter your email address" class="inputbox" required>
+        <input type="password" name="password" placeholder="Enter your password" class="inputbox" required>
+        <button type="submit" class="submit_button">Continue</button>
+    </form>
+    </div>
+    <p class = "para">Already have an account?  <a href="signin.html" class = "para_anchor">Log In</a></p>
+  </div>
+</div><br></body></html>

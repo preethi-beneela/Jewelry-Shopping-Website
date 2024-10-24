@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Report</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .download-btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Financial Report</h1>
+    <table id="report-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Type</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <button id="download-report" class="download-btn">Download Report as PDF</button>
+
+    <script>
+        async function fetchReportData() {
+            try {
+                const response = await fetch('/transactions'); // Adjust the endpoint as necessary
+                const transactions = await response.json();
+
+                const tbody = document.querySelector('#report-table tbody');
+                transactions.forEach(transaction => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${transaction.name}</td>
+                        <td>${transaction.amount.toFixed(2)}</td>
+                        <td>${transaction.type}</td>
+                        <td>${new Date(transaction.date).toLocaleDateString()}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching report data:', error);
+            }
+        }
+
+        async function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+
+            const doc = new jsPDF();
+            doc.setFontSize(16);
+            doc.setFont('Helvetica', 'bold');
+            doc.text('Financial Report', 14, 20);
+            doc.setFontSize(12);
+            doc.setFont('Helvetica', 'normal');
+            doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
+            doc.text(`Generated at: ${new Date().toLocaleTimeString()}`, 14, 36);
+
+            // Add some space before the table
+            doc.text('', 14, 46);
+
+            // Set up table headers
+            const headers = [["Name", "Amount", "Type", "Date"]];
+            const tableData = [];
+            const rows = Array.from(document.getElementById('report-table').rows);
+            rows.forEach((row, index) => {
+                if (index > 0) { // Skip header row
+                    const cells = Array.from(row.cells);
+                    tableData.push([cells[0].innerText, cells[1].innerText, cells[2].innerText, cells[3].innerText]);
+                }
+            });
+
+            // Add table to PDF
+            const startY = 50;
+            const rowHeight = 10;
+            const colWidths = [40, 40, 40, 40];
+
+            // Draw table headers
+            headers[0].forEach((header, index) => {
+                doc.setFillColor(76, 175, 80); // Green background
+                doc.rect(14 + colWidths.slice(0, index).reduce((a, b) => a + b, 0), startY, colWidths[index], rowHeight, 'F'); // Header background
+                doc.setTextColor(255, 255, 255); // White text
+                doc.text(header, 14 + colWidths.slice(0, index).reduce((a, b) => a + b, 0) + 2, startY + 7); // Header text
+            });
+
+            // Reset text color
+            doc.setTextColor(0, 0, 0);
+
+            // Draw table rows
+            tableData.forEach((data, rowIndex) => {
+                data.forEach((cell, colIndex) => {
+                    const x = 14 + colWidths.slice(0, colIndex).reduce((a, b) => a + b, 0);
+                    const y = startY + (rowIndex + 1) * rowHeight;
+                    doc.rect(x, y, colWidths[colIndex], rowHeight); // Cell border
+                    doc.text(cell, x + 2, y + 7); // Cell text
+                });
+            });
+
+            // Save the PDF
+            doc.save('financial_report.pdf');
+        }
+
+        document.getElementById('download-report').addEventListener('click', downloadPDF);
+
+        window.onload = fetchReportData; // Load data on page load
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.3",
+    "connect-mongo": "^5.1.0",
+    "express": "^4.21.1",
+    "express-fileupload": "^1.5.1",
+    "express-session": "^1.18.1",
+    "gridfs-stream": "^1.1.1",
+    "mongodb": "^6.9.0",
+    "mongoose": "^8.7.2",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.1.7"
+  },
+  "name": "web_project",
+  "version": "1.0.0",
+  "main": "dp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": " nodemon dp.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
